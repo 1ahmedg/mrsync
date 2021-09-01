@@ -40,7 +40,7 @@
        host, the copy occurs locally (see also the --list-only option).
        
     SETUP
-       See the file [README [https://ahmedg.fr/mrsync.txt] for installation instructions.
+       See the file https://ahmedg.fr/mrsync.txt for installation instructions.
 
        Once  installed,  you  can use mrsync to any machine that you can access
        via a remote shell (as well as some that you can access using the mrsync
