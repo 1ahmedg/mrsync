@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 # created by Ahmed G on 26/03/2021
 import os, sys, time
-import message,filelist as fl,generator, sender
-from options import timeout, perms , directories
-from message import send,receive,verbose
-from sender import pickling, cleaner
-from generator import get_lastname, get_common
+import src.message as message,src.filelist as fl,src.generator as generator, src.sender as sender
+from src.options import timeout, perms , directories
+from src.message import send,receive,verbose
+from src.sender import pickling, cleaner
+from src.generator import get_lastname, get_common
 
 
 def server(add,readfd, writefd,mode):
@@ -15,17 +15,12 @@ def server(add,readfd, writefd,mode):
     time.sleep(1)
     tag, msg = receive(readfd)
 
-    
-
     # premières informations
     if tag == b'info':
         liste = msg
     elif tag == b'erro':
         print("srv ~ transfert impossible dû a une erreur, sortie imminente")
         return 404
-
-        
-
     SOURCE_LIST = liste
     DEST_LIST = [DD,DF,DL]
     
@@ -44,9 +39,6 @@ def server(add,readfd, writefd,mode):
         if verbose() > 2:
             time.sleep(0.2)
             print(f"srv ~ {pid} has ended with {status}")
-
-
-
         if mode == 'r' or mode == 'transfer' or directories(): # if mode different than list only
             tag, msg = receive(readfd)
 
@@ -62,11 +54,9 @@ def server(add,readfd, writefd,mode):
                         os.chdir(x)
                     os.chdir(saved)
             
-
             while tag != b'endt' and not(directories()): # t for transfer
 
                 tag, msg = receive(readfd)
-
                 if tag == b'file': # info of the file
                     filepath = msg[0]
                     total.append(msg[0])
@@ -87,7 +77,6 @@ def server(add,readfd, writefd,mode):
 
                     os.close(file_in)
 
-
             if tag == b'endt': # transfer done
                 res=''
 
@@ -98,7 +87,6 @@ def server(add,readfd, writefd,mode):
                 else:
                     print("0 files updated")
                     sys.exit(0)
-
             else:
                 if tag == b'erro':
                     print(f"srv ~ Has received an error from sender {msg}")
@@ -106,4 +94,3 @@ def server(add,readfd, writefd,mode):
                 sys.exit(5)
         else: # we are in list only mode -> no work to be done
             sys.exit(0)
-
